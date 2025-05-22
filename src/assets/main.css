@@ -8,18 +8,14 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
+  /* height: 100vh; */
 }
 
 #navbarText {
   background-color: #272a35 !important;
-  /* border: 1px solid; */
   width: 10% !important;
 }
 
-#h1 {
-  font-size: 150px !important;
-  font-weight: 200 !important;
-}
 li a {
   display: flex;
   margin: 10px 30px;
@@ -35,4 +31,79 @@ li a.router-link-exact-active {
 
 .navbar-brand {
   width: 30%;
+}
+
+/* for home page */
+
+.homecontent {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: center;
+  /* margin: 10px 0px; */
+  padding: 140px 10px;
+}
+h1 {
+  font-size: 150px !important;
+  font-weight: 200 !important;
+}
+.homecontent div {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* for destination page */
+#p{
+    position: absolute;
+    left: 250px;
+    margin: -90px 0px 20px;
+    text-align: center;
+}
+#img{
+    width: 290px;
+    display: flex;
+    margin: 30px auto 10px;
+}
+
+
+
+@media screen and (max-width: 900px) {
+  #navbarText {
+    margin: 0 !important;
+    padding: 0 !important;
+    width: 100% !important;
+  }
+
+  #navs {
+    padding: 0 !important;
+    width: 100%;
+    /* border: 30px solid; */
+    margin: 0px !important;
+  }
+  ul p {
+    margin: 0 !important;
+    display: none;
+  }
+  .homecontent {
+    flex-direction: column;
+    padding: 0px;
+  }
+  h1 {
+    font-size: 80px !important;
+    font-weight: 200 !important;
+  }
+  .homecontent div {
+    padding-top: 10px;
+    width: 100%;
+    /* display: flex;
+  flex-direction: column; */
+  }
+   #p{
+    position: unset;
+    margin-top: 50px;
+        /* left: 50px; */
+        /* top: 150px; */
+    }
+    
 }

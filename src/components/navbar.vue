@@ -1,16 +1,9 @@
 <template>
-  <div>
-    <nav class="navbar navbar-expand-lg px-5" id="navbars">
+  <div style="width: 100%; padding: 0; margin: 0;"> 
+    <nav class="navbar navbar-expand-lg px-5"  id="navs">
       <div class="container-fluid">
          <RouterLink class="navbar-brand" to="/"><img src="../assets/shared/logo.svg" alt="" /></RouterLink>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarText"
-          aria-controls="navbarText"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"  data-bs-target="#navbarText"  aria-controls="navbarText"  aria-expanded="false"    aria-label="Toggle navigation"
         >
           <span class="navbar-toggler-icon"></span>
         </button>
@@ -49,5 +42,6 @@ export default {
 </script>
 
 <style scoped>
+
 
 </style>
