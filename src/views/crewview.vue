@@ -13,12 +13,15 @@ import navs from '../components/navbar.vue'
 <style  scoped>
 
 #main {
-    background-image: url(../assets/home/background-home-desktop.jpg);
+    background-image: url(../assets/crew/background-crew-desktop.jpg);
     
     color: white;
     height: 100vh;
     /* font-family: Roboto; */
 }
 
+#nav3{
+    border-bottom: 3px solid white;
+}
 </style>
 
