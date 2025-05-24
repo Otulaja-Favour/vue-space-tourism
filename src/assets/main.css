@@ -8,7 +8,8 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  /* height: 100vh; */
+  height: 108vh !important;
+  border: 2px solid green;
 }
 
 #navbarText {
@@ -57,6 +58,7 @@ h1 {
 #p{
     position: absolute;
     left: 250px;
+    top: 200px !important;
     margin: -90px 0px 20px;
     text-align: center;
 }

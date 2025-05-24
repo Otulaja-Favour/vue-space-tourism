@@ -1,11 +1,14 @@
 <script setup>
 import navs from '../components/navbar.vue'
+import technologyfeature from '@/components/technologyfeature.vue';
 </script>
 
 <template>
   <div id="main" class="container-fluid">
     <navs />
-    <!-- <h1>whiwji</h1> -->
+   <technologyfeature />
+    
+
   </div>
 </template>
 

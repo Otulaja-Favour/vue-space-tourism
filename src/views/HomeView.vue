@@ -17,7 +17,7 @@ import homefeature from '@/components/homefeature.vue';
     background-image: url(../assets/home/background-home-desktop.jpg);
     
     color: white;
-    height: 100vh;
+    /* height: 100vh; */
     /* font-family: Roboto; */
 }
 
