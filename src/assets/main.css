@@ -23,6 +23,9 @@ li a {
   color: #abafb9 !important;
   text-decoration: none;
 }
+#img{
+  width: 250px !important;
+}
 
 li a.router-link-exact-active {
   display: flex;

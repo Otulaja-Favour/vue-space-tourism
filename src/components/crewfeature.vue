@@ -3,12 +3,11 @@
     <div class="crew-content">
       <!-- Left: Image -->
       <div class="crew-image-container">
-        <!-- <br><br> -->
-        <img :src="selectedCrew.images.png" :alt="selectedCrew.name" class="crew-image" />
+        <img id="img" :src="selectedImage" :alt="selectedCrew.name" class="crew-image" />
       </div>
 
       <!-- Right: Buttons + Info -->
-      <div  class="toget" >
+      <div class="toget">
         <p id="p">Meet the Crew</p>
         <div class="crew-info">
           <!-- Circle Buttons -->
@@ -36,6 +35,13 @@
 </template>
 
 <script>
+import jsonData from '/public/data.json'
+
+// Preload crew images from assets
+const crewImages = import.meta.glob('@/assets/crew/*.{png,jpg,jpeg,webp}', {
+  eager: true,
+})
+
 export default {
   data() {
     return {
@@ -43,31 +49,29 @@ export default {
       selectedCrew: null,
     }
   },
-  methods: {
-    selectCrew(name) {
-      this.selectedCrew = this.data.crew.find((member) => member.name === name)
+  computed: {
+    selectedImage() {
+      if (!this.selectedCrew) return ''
+      const filename = this.selectedCrew.images.png.split('/').pop()
+      const path = `/src/assets/crew/${filename}`
+      return crewImages[path]?.default || ''
     },
   },
-  mounted() {
-    fetch('/data.json')
-      .then((response) => {
-        if (!response.ok) throw new Error('Failed to fetch')
-        return response.json()
-      })
-      .then((json) => {
-        this.data = json
-        this.selectedCrew = json.crew[0] // default to first crew member
-      })
-      .catch((error) => {
-        console.error('Fetch error:', error)
-      })
+  methods: {
+    selectCrew(name) {
+      this.selectedCrew = this.data.crew.find(member => member.name === name)
+    },
+  },
+  created() {
+    this.data = jsonData
+    this.selectedCrew = jsonData.crew[0]
   },
 }
 </script>
 
 <style scoped>
 .crew-container {
-width: 100%;
+  width: 100%;
   margin: 0 auto;
   padding: 2rem;
   font-family: sans-serif;
@@ -83,7 +87,6 @@ width: 100%;
   display: flex;
   flex-direction: row-reverse;
   width: 100%;
-  ;
   gap: 2rem;
   align-items: flex-start;
   flex-wrap: wrap;
@@ -92,7 +95,6 @@ width: 100%;
 .crew-image-container {
   flex: 1 1 40%;
   text-align: center;
-  ;
 }
 
 .crew-image {
@@ -102,8 +104,6 @@ width: 100%;
 }
 
 .crew-info {
-  /* flex: 1 1 50%; */
-  /* width: 50%; */
   display: flex;
   flex-direction: column-reverse;
 }
@@ -115,8 +115,8 @@ width: 100%;
 }
 
 .dot-buttons button {
-  width: 46px;
-  height: 46px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   border: none;
   background: #ccc;
@@ -143,18 +143,19 @@ width: 100%;
   font-size: 1rem;
   line-height: 1.6;
 }
-.toget{
-  display: flex; 
-  flex-direction: column; 
-  width: 50%; 
+
+.toget {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
 }
 
 @media screen and (max-width:900px) {
-  .crew-image-container{
+  .crew-image-container {
     width: 100% !important;
     border: 1px solid !important;
   }
-  .toget{
+  .toget {
     width: 100%;
   }
 }

@@ -1,38 +1,41 @@
 <template>
   <div v-if="data" class="destination-container">
-    <div class="content">
+    <div class="destination-content">
       <!-- Left: Image -->
-      <br />
-      <div class="image-container">
-        <!-- <p>hi</p> -->
-
-        <p id="p">01 Pick your destination</p>
-        
-        <img
-          :src="selectedDestinationImage"
-          :alt="selectedDestination.name"
-          class="destination-image"
-        />
+      <div class="destination-image-container">
+        <p id="p">Pick your destination</p>
+        <img id="img" :src="selectedImage" :alt="selectedDestination.name" class="destination-image" />
       </div>
 
-      <!-- Right: Buttons and content -->
-      <div class="info">
-        <div class="button-group">
+      <!-- Right: Navigation + Info -->
+      <div class="destination-info">
+
+        <!-- Tab Navigation -->
+        <div class="tab-buttons">
           <button
-            v-for="destination in data.destinations"
-            :key="destination.name"
-            @click="selectDestination(destination)"
-            :class="{ active: destination.name === selectedDestination.name }"
+            v-for="place in data.destinations"
+            :key="place.name"
+            @click="selectDestination(place.name)"
+            :class="{ active: place.name === selectedDestination.name }"
           >
-            {{ destination.name }}
+            {{ place.name }}
           </button>
         </div>
 
-        <div class="details">
-          <h3>{{ selectedDestination.name }}</h3>
+        <!-- Destination Details -->
+        <div class="destination-details">
+          <h2>{{ selectedDestination.name }}</h2>
           <p>{{ selectedDestination.description }}</p>
-          <p><strong>Distance:</strong> {{ selectedDestination.distance }}</p>
-          <p><strong>Travel Time:</strong> {{ selectedDestination.travel }}</p>
+          <div class="destination-meta">
+            <div>
+              <h5>Avg. Distance</h5>
+              <p>{{ selectedDestination.distance }}</p>
+            </div>
+            <div>
+              <h5>Est. Travel Time</h5>
+              <p>{{ selectedDestination.travel }}</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -41,67 +44,58 @@
   <div v-else>Loading...</div>
 </template>
 
-<script setup>
-import { ref, computed, onMounted } from 'vue';
+<script>
+import jsonData from '/public/data.json'
 
-// Reactive state
-const data = ref(null);
-const selectedDestination = ref(null);
+// Preload destination images
+const destinationImages = import.meta.glob('@/assets/destination/*.{png,jpg,jpeg,webp}', {
+  eager: true,
+})
 
-// Dynamic image imports
-const images = import.meta.glob('/src/assets/destination/*.{png,webp}', { eager: true });
-
-// Computed property for the selected destination's image
-const selectedDestinationImage = computed(() => {
-  if (!selectedDestination.value) return '';
-  const imagePath = `/src/assets/destination/${selectedDestination.value.images.png}`;
-  return images[imagePath]?.default || '';
-});
-
-// Method to select a destination
-const selectDestination = (destination) => {
-  selectedDestination.value = destination;
-};
-
-// Fetch data on mount
-onMounted(async () => {
-  try {
-    const response = await fetch('/data.json');
-    if (!response.ok) throw new Error('Failed to fetch data');
-    data.value = await response.json();
-    selectedDestination.value = data.value.destinations[0];
-  } catch (error) {
-    console.error('Fetch error:', error);
-  }
-});
+export default {
+  data() {
+    return {
+      data: null,
+      selectedDestination: null,
+    }
+  },
+  computed: {
+    selectedImage() {
+      if (!this.selectedDestination) return ''
+      const filename = this.selectedDestination.images.png.split('/').pop()
+      const path = `/src/assets/destination/${filename}`
+      return destinationImages[path]?.default || ''
+    },
+  },
+  methods: {
+    selectDestination(name) {
+      this.selectedDestination = this.data.destinations.find(dest => dest.name === name)
+    },
+  },
+  created() {
+    this.data = jsonData
+    this.selectedDestination = jsonData.destinations[0]
+  },
+}
 </script>
 
 <style scoped>
 .destination-container {
-  width: 100% !important;
+  max-width: 1200px;
   margin: 0 auto;
   padding: 2rem;
   font-family: sans-serif;
 }
 
-.title {
-  text-align: center;
-  margin-bottom: 2rem;
-  font-size: 2rem;
-}
-
-.content {
+.destination-content {
   display: flex;
   gap: 2rem;
-  align-items: flex-start;
   flex-wrap: wrap;
+  align-items: center;
 }
 
-.image-container {
-  display: flex;
-  width: 40%;
-  flex-direction: column;
-  /* border: 10px solid pink; */
+.destination-image-container {
+  flex: 1 1 40%;
   text-align: center;
 }
 
@@ -111,52 +105,50 @@ onMounted(async () => {
   height: auto;
 }
 
-.info {
+.destination-info {
   flex: 1 1 50%;
 }
 
-.button-group {
+.tab-buttons {
+  display: flex;
+  gap: 1rem;
+  margin: 1rem 0;
+}
+
+.tab-buttons button {
+  background: none;
+  border: none;
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.5rem;
+  color: #aaa;
+}
+
+.tab-buttons button.active {
+  color: #000;
+  border-bottom: 2px solid #000;
+}
+
+.destination-details h2 {
+  font-size: 2rem;
   margin-bottom: 1rem;
 }
 
-.button-group button {
-  /* margin-right: 0.5r; */
-  margin: 5px;
-  padding: 10px 10px;
-  background: none;
-  border: 1px solid white !important;
-  border-radius: 10px 10px 0px 0px;
-  border: none;
-  cursor: pointer;
-  font-weight: bold;
-  color: white;
-  font-size: 12px;
+.destination-details p {
+  font-size: 1rem;
+  line-height: 1.6;
 }
 
-.button-group button.active {
-  background-color: white;
-  color: black;
+.destination-meta {
+  display: flex;
+  gap: 2rem;
+  margin-top: 1rem;
 }
 
-.details h3 {
-  margin: 1rem 0 0.5rem;
-  font-size: 1.5rem;
-}
-
-.details p {
-  margin: 0.5rem 0;
-}
-@media screen and (max-width:900px) {
-  .image-container{
-    width: 100%;
-    /* border: 1px solid; */
-  }
-  .destination-container{
-    padding: 6px !important;
-  }
-  .content{
-    padding: 6px ;
-    /* border: 1px solid; */
-  }
+.destination-meta h5 {
+  font-size: 0.8rem;
+  color: #888;
+  text-transform: uppercase;
+  margin-bottom: 0.2rem;
 }
 </style>
