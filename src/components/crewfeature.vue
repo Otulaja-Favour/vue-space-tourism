@@ -1,34 +1,32 @@
 <template>
   <div v-if="data" class="crew-container">
-    <h2 class="title">Meet the Crew</h2>
-
     <div class="crew-content">
       <!-- Left: Image -->
       <div class="crew-image-container">
-        <img
-          :src="selectedCrew.images.png"
-          :alt="selectedCrew.name"
-          class="crew-image"
-        />
+        <!-- <br><br> -->
+        <img :src="selectedCrew.images.png" :alt="selectedCrew.name" class="crew-image" />
       </div>
 
       <!-- Right: Buttons + Info -->
-      <div class="crew-info">
-        <!-- Circle Buttons -->
-        <div class="dot-buttons">
-          <button
-            v-for="member in data.crew"
-            :key="member.name"
-            @click="selectCrew(member.name)"
-            :class="{ active: member.name === selectedCrew.name }"
-          ></button>
-        </div>
+      <div  class="toget" >
+        <p id="p">Meet the Crew</p>
+        <div class="crew-info">
+          <!-- Circle Buttons -->
+          <div class="dot-buttons">
+            <button
+              v-for="member in data.crew"
+              :key="member.name"
+              @click="selectCrew(member.name)"
+              :class="{ active: member.name === selectedCrew.name }"
+            ></button>
+          </div>
 
-        <!-- Crew Details -->
-        <div class="crew-details">
-          <h4>{{ selectedCrew.role }}</h4>
-          <h3>{{ selectedCrew.name }}</h3>
-          <p>{{ selectedCrew.bio }}</p>
+          <!-- Crew Details -->
+          <div class="crew-details">
+            <h4>{{ selectedCrew.role }}</h4>
+            <h3>{{ selectedCrew.name }}</h3>
+            <p>{{ selectedCrew.bio }}</p>
+          </div>
         </div>
       </div>
     </div>
@@ -42,34 +40,34 @@ export default {
   data() {
     return {
       data: null,
-      selectedCrew: null
+      selectedCrew: null,
     }
   },
   methods: {
     selectCrew(name) {
-      this.selectedCrew = this.data.crew.find(member => member.name === name)
-    }
+      this.selectedCrew = this.data.crew.find((member) => member.name === name)
+    },
   },
   mounted() {
     fetch('/data.json')
-      .then(response => {
+      .then((response) => {
         if (!response.ok) throw new Error('Failed to fetch')
         return response.json()
       })
-      .then(json => {
+      .then((json) => {
         this.data = json
         this.selectedCrew = json.crew[0] // default to first crew member
       })
-      .catch(error => {
+      .catch((error) => {
         console.error('Fetch error:', error)
       })
-  }
+  },
 }
 </script>
 
 <style scoped>
 .crew-container {
-  max-width: 1200px;
+width: 100%;
   margin: 0 auto;
   padding: 2rem;
   font-family: sans-serif;
@@ -83,6 +81,9 @@ export default {
 
 .crew-content {
   display: flex;
+  flex-direction: row-reverse;
+  width: 100%;
+  ;
   gap: 2rem;
   align-items: flex-start;
   flex-wrap: wrap;
@@ -91,6 +92,7 @@ export default {
 .crew-image-container {
   flex: 1 1 40%;
   text-align: center;
+  ;
 }
 
 .crew-image {
@@ -100,7 +102,10 @@ export default {
 }
 
 .crew-info {
-  flex: 1 1 50%;
+  /* flex: 1 1 50%; */
+  /* width: 50%; */
+  display: flex;
+  flex-direction: column-reverse;
 }
 
 .dot-buttons {
@@ -110,8 +115,8 @@ export default {
 }
 
 .dot-buttons button {
-  width: 16px;
-  height: 16px;
+  width: 46px;
+  height: 46px;
   border-radius: 50%;
   border: none;
   background: #ccc;
@@ -137,5 +142,20 @@ export default {
 .crew-details p {
   font-size: 1rem;
   line-height: 1.6;
+}
+.toget{
+  display: flex; 
+  flex-direction: column; 
+  width: 50%; 
+}
+
+@media screen and (max-width:900px) {
+  .crew-image-container{
+    width: 100% !important;
+    border: 1px solid !important;
+  }
+  .toget{
+    width: 100%;
+  }
 }
 </style>

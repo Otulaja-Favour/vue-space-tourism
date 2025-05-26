@@ -8,8 +8,8 @@
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  height: 108vh !important;
-  border: 2px solid green;
+  height: 118vh !important;
+  /* border: 2px solid green; */
 }
 
 #navbarText {
@@ -56,11 +56,10 @@ h1 {
 
 /* for destination page */
 #p{
-    position: absolute;
-    left: 250px;
-    top: 200px !important;
-    margin: -90px 0px 20px;
-    text-align: center;
+   
+    margin: 0px 0px 80px;
+    /* border: 1px solid; */
+    width: 40%;
 }
 #img{
     width: 290px;
@@ -102,10 +101,8 @@ h1 {
   flex-direction: column; */
   }
    #p{
-    position: unset;
-    margin-top: 50px;
-        /* left: 50px; */
-        /* top: 150px; */
+    margin-top: 30px;
+    width: 100%;
     }
     
 }

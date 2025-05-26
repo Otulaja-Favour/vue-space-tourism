@@ -1,18 +1,20 @@
 <template>
   <div v-if="data" class="tech-container">
-    <h2 class="title">Space Launch 101</h2>
-
+    
     <div class="tech-content">
       <!-- Left: Image -->
       <div class="tech-image-container">
         <img
-          :src="selectedTechnology.images.portrait"
-          :alt="selectedTechnology.name"
-          class="tech-image"
+        :src="selectedTechnology.images.portrait"
+        :alt="selectedTechnology.name"
+        class="tech-image"
         />
       </div>
+      
+      <div id="techtoget">
+        <p id="p">Space Launch 101</p>
 
-      <!-- Right: Navigation + Details -->
+ <!-- Right: Navigation + Details -->
       <div class="tech-info">
         <!-- Circle Navigation Buttons -->
         <div class="dot-buttons">
@@ -31,6 +33,8 @@
           <p>{{ selectedTechnology.description }}</p>
         </div>
       </div>
+      </div>
+     
     </div>
   </div>
 
@@ -83,9 +87,7 @@ export default {
 
 .tech-content {
   display: flex;
-  gap: 2rem;
-  align-items: flex-start;
-  flex-wrap: wrap;
+  flex-direction: row-reverse;
 }
 
 .tech-image-container {
@@ -100,18 +102,23 @@ export default {
 }
 
 .tech-info {
-  flex: 1 1 50%;
+  /* flex: 1 1 50%; */
+  display: flex;
+  flex-direction: row;
+  width: 50%;
 }
 
 .dot-buttons {
   display: flex;
-  gap: 1rem;
-  margin-bottom: 1rem;
+  flex-direction: column;
+  gap: 30px;
+  /* margin-bottom: 1rem; */
+  margin: 0px 30px 20px 0px;
 }
 
 .dot-buttons button {
-  width: 16px;
-  height: 16px;
+  width: 36px;
+  height: 36px;
   border-radius: 50%;
   border: none;
   background: #ccc;

@@ -24,7 +24,13 @@ import crewfeature from '@/components/crewfeature.vue';
 }
 
 #nav3{
-    border-bottom: 3px solid white;
+    /* border-bottom: 3px solid white; */
+}
+
+@media screen and (max-width:900px) {
+  #main{
+    /* height: 700px !important; */
+  }
 }
 </style>
 

@@ -1,17 +1,15 @@
 <template>
   <div v-if="data" class="destination-container">
-    
     <div class="content">
       <!-- Left: Image -->
-      <br>
+      <br />
       <div class="image-container">
         <!-- <p>hi</p> -->
-        
-        <h2  id="p">Pick your destination</h2>
-<br><br>
 
+        <p id="p">01 Pick your destination</p>
+        
         <img
-          :src="selectedDestination.images.png"
+          :src="selectedDestinationImage"
           :alt="selectedDestination.name"
           class="destination-image"
         />
@@ -23,7 +21,7 @@
           <button
             v-for="destination in data.destinations"
             :key="destination.name"
-            @click="selectDestination(destination.name)"
+            @click="selectDestination(destination)"
             :class="{ active: destination.name === selectedDestination.name }"
           >
             {{ destination.name }}
@@ -43,41 +41,44 @@
   <div v-else>Loading...</div>
 </template>
 
-<script>
-export default {
-  data() {
-    return {
-      data: null,
-      selectedDestination: null
-    }
-  },
-  methods: {
-    selectDestination(name) {
-      this.selectedDestination = this.data.destinations.find(dest => dest.name === name)
-    }
-  },
-  mounted() {
-    fetch('/data.json')
-      .then(response => {
-        if (!response.ok) {
-          throw new Error('Failed to fetch')
-        }
-        return response.json()
-      })
-      .then(json => {
-        this.data = json
-        this.selectedDestination = json.destinations[0] // default to the first one
-      })
-      .catch(error => {
-        console.error('Fetch error:', error)
-      })
+<script setup>
+import { ref, computed, onMounted } from 'vue';
+
+// Reactive state
+const data = ref(null);
+const selectedDestination = ref(null);
+
+// Dynamic image imports
+const images = import.meta.glob('/src/assets/destination/*.{png,webp}', { eager: true });
+
+// Computed property for the selected destination's image
+const selectedDestinationImage = computed(() => {
+  if (!selectedDestination.value) return '';
+  const imagePath = `/src/assets/destination/${selectedDestination.value.images.png}`;
+  return images[imagePath]?.default || '';
+});
+
+// Method to select a destination
+const selectDestination = (destination) => {
+  selectedDestination.value = destination;
+};
+
+// Fetch data on mount
+onMounted(async () => {
+  try {
+    const response = await fetch('/data.json');
+    if (!response.ok) throw new Error('Failed to fetch data');
+    data.value = await response.json();
+    selectedDestination.value = data.value.destinations[0];
+  } catch (error) {
+    console.error('Fetch error:', error);
   }
-}
+});
 </script>
 
 <style scoped>
 .destination-container {
-  max-width: 1200px;
+  width: 100% !important;
   margin: 0 auto;
   padding: 2rem;
   font-family: sans-serif;
@@ -97,7 +98,10 @@ export default {
 }
 
 .image-container {
-  flex: 1 1 40%;
+  display: flex;
+  width: 40%;
+  flex-direction: column;
+  /* border: 10px solid pink; */
   text-align: center;
 }
 
@@ -116,17 +120,22 @@ export default {
 }
 
 .button-group button {
-  margin-right: 0.5rem;
-  padding: 0.5rem 1rem;
-  background: #eee;
+  /* margin-right: 0.5r; */
+  margin: 5px;
+  padding: 10px 10px;
+  background: none;
+  border: 1px solid white !important;
+  border-radius: 10px 10px 0px 0px;
   border: none;
   cursor: pointer;
   font-weight: bold;
+  color: white;
+  font-size: 12px;
 }
 
 .button-group button.active {
-  background-color: #333;
-  color: white;
+  background-color: white;
+  color: black;
 }
 
 .details h3 {
@@ -136,5 +145,18 @@ export default {
 
 .details p {
   margin: 0.5rem 0;
+}
+@media screen and (max-width:900px) {
+  .image-container{
+    width: 100%;
+    /* border: 1px solid; */
+  }
+  .destination-container{
+    padding: 6px !important;
+  }
+  .content{
+    padding: 6px ;
+    /* border: 1px solid; */
+  }
 }
 </style>
